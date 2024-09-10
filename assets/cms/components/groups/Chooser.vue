@@ -74,15 +74,23 @@ export default {
             searchKeywords: '',
             searchResults: [],
             searchSubmitted: false,
-            treeID: 0
+            treeID: 0,
+            guestGroupTreeNodeID: null,
+            registeredGroupTreeNodeID: null
         }
     },
     watch: {
         treeID: function() {
             var my = this
+            var removeNodesByKey = []
+            if (this.guestGroupTreeNodeID !== null && this.registeredGroupTreeNodeID !== null) {
+                removeNodesByKey.push(this.guestGroupTreeNodeID)
+                removeNodesByKey.push(this.registeredGroupTreeNodeID)
+            }
             var options = {
                 treeID: my.treeID,
-                enableDragAndDrop: false
+                enableDragAndDrop: false,
+                removeNodesByKey: removeNodesByKey
             }
             if (my.mode === 'select') {
                 options.onClick = function(node) {
@@ -112,7 +120,9 @@ export default {
                 ccm_token: CCM_SECURITY_TOKEN
             },
             success: function (r) {
-                my.treeID = r.treeID
+                my.guestGroupTreeNodeID = r.guestGroupTreeNodeID
+                my.registeredGroupTreeNodeID = r.registeredGroupTreeNodeID
+                my.treeID = r.tree.treeID
             }
         })
     },
@@ -138,6 +148,7 @@ export default {
                 url: CCM_DISPATCHER_FILENAME + '/ccm/system/group/chooser/search',
                 method: 'POST',
                 data: {
+                    filter: 'assign',
                     ccm_token: CCM_SECURITY_TOKEN,
                     keywords: my.searchKeywords
                 },
