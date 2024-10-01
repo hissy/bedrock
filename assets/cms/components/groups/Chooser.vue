@@ -57,6 +57,11 @@ export default {
     components: {
     },
     props: {
+        filter: {
+            type: String,
+            required: false,
+            default: '' /* Values are either "" or "assign". If assign, we strip out faux-groups like "Guest" and "Registered Users" */
+        },
         mode: {
             type: String,
             required: false,
@@ -83,7 +88,7 @@ export default {
         treeID: function() {
             var my = this
             var removeNodesByKey = []
-            if (this.guestGroupTreeNodeID !== null && this.registeredGroupTreeNodeID !== null) {
+            if (this.filter === 'assign' && this.guestGroupTreeNodeID !== null && this.registeredGroupTreeNodeID !== null) {
                 removeNodesByKey.push(this.guestGroupTreeNodeID)
                 removeNodesByKey.push(this.registeredGroupTreeNodeID)
             }
@@ -148,7 +153,7 @@ export default {
                 url: CCM_DISPATCHER_FILENAME + '/ccm/system/group/chooser/search',
                 method: 'POST',
                 data: {
-                    filter: 'assign',
+                    filter: my.filter,
                     ccm_token: CCM_SECURITY_TOKEN,
                     keywords: my.searchKeywords
                 },

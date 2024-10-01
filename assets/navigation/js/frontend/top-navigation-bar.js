@@ -4,7 +4,7 @@
         if (window.innerWidth > 992) {
             document.querySelectorAll('.ccm-block-top-navigation-bar .nav-item').forEach(function(everyitem) {
                 everyitem.addEventListener('mouseover', function(e) {
-                    const linkElement = this.querySelector('a[data-bs-toggle]')
+                    const linkElement = this.querySelector('a[data-concrete-toggle]')
                     if (linkElement != null) {
                         const nextElement = linkElement.nextElementSibling
                         linkElement.classList.add('show')
@@ -12,7 +12,7 @@
                     }
                 })
                 everyitem.addEventListener('mouseleave', function(e) {
-                    const linkElement = this.querySelector('a[data-bs-toggle]')
+                    const linkElement = this.querySelector('a[data-concrete-toggle]')
                     if (linkElement != null) {
                         const nextElement = linkElement.nextElementSibling
                         linkElement.classList.remove('show')
@@ -21,7 +21,7 @@
                 })
             })
         } else {
-            $('a[data-bs-toggle]').on('click', function(e) {
+            $('a[data-concrete-toggle]').on('click', function(e) {
                 if (!$(this).hasClass('show')) {
                     e.preventDefault()
                     const $nextElement = $(this).next()
