@@ -139,9 +139,7 @@ ConcreteTree.prototype = {
             select: function (select, data) {
                 if (options.chooseNodeInForm) {
                     const keys = my.getSelectedNodeKeys(data.tree.getRootNode(), ajaxData.treeNodeSelectedIDs)
-                    if (keys.length) {
-                        options.onSelect(keys)
-                    }
+                    options.onSelect(keys)
                 }
             },
 
@@ -307,15 +305,18 @@ ConcreteTree.prototype = {
         })
     },
 
+    // Fancytree provides a selected keys array, but it doesn't include the children of closed categories.
+    // So we need to walk through the entire tree to get all selected nodes.
     getSelectedNodeKeys: function (node, selected) {
         var my = this
 
         // Initialize selected array
         selected = selected || []
 
-        // Remove keys that are not in the tree anymore
-        selected = selected.filter(function (key) {
-            return $.ui.fancytree.getTree(my.$element).getNodeByKey(parseInt(key)) !== null
+        // We need to remove 0 as a selected key, because sometimes it comes from php and means null.
+        // See: https://github.com/concretecms/concretecms/issues/12118
+        selected = selected.filter(function (value) {
+            return parseInt(value) > 0
         })
 
         // Walk through all child nodes
