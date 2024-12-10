@@ -147,7 +147,7 @@ ConcreteTree.prototype = {
                     }
                     // Call onSelect callback
                     options.onSelect(keys)
-                    // Update selected nodes for ajax request to avoid hidden nodes to be deselected
+                    // Update selected nodes for ajax request to avoid hidden nodes to be selected unexpectedly
                     ajaxData.treeNodeSelectedIDs = keys
                 }
             },
